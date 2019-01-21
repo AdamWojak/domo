@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>K.R.DOM</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/email.css}"/>
+</head>
+<body>
+
+
+<p th:text="${trescMaila}"></p>
+
+<br>
+<br>
+<p>
+    Prosimy o potwierdzenie otrzymanej wiadomości.<br>
+    <br>
+    Pozdrawiam,<br>
+    Krystyna Domosławska<br>
+    Księgowa<br>
+</p>
+<br>
+<br>
+<br>
+
+<p>
+    <b><span style="color: green"> K.R.DOM Biuro Rachunkowe i Zarządzanie Nieruchomościami</span> </b><br>
+
+    <span style="color: darkblue">
+            <i>
+                Robert Domosławski<br>
+                ul. Krasińskiego 21/23 lok. 56, 87-100 Toruń<br>
+            </i>
+            <b>tel. 56/62-273-92 kom. 693-524-014, kom 725 488 258 (księgowa)<br></b>
+            email:
+        </span>
+    <a th:href="'mailto: robertdomoslawski@wp.pl'">robertdomoslawski@wp.pl </a><br>
+</p>
+<br>
+
+<br>
+<div class="footer">
+    <p>
+        <b>Uwaga! </b>
+        Niniejsza wiadomość ma charakter poufny i nie może być ujawniana. Osoby nieupoważnione do otrzymania niniejszej wiadomości
+        informujemy, że jej rozpowszechnianie lub powielanie jest niedozwolone. Jeżeli otrzymali Państwo tę wiadomość w wyniku pomyłki,
+        prosimy o bezzwłoczne zawiadomienie o tym fakcie nadawcy i o usunięcie wiadomości z Państwa systemu komputerowego. Dziękujemy.
+    </p>
+</div>
+</body>
+

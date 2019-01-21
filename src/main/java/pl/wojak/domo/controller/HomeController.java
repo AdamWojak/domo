@@ -18,4 +18,9 @@ public class HomeController {
     public String hello(Model model) {
         return "index";
     }
+
+    @RequestMapping("/email")
+    public String email(Model model) {
+        return "email/wodaTemplate";
+    }
 }
