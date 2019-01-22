@@ -30,11 +30,11 @@ public class MainController {
 
         System.out.println("test");
 
-        return "udało się!";
+        return "koniec";
     }
 
     @RequestMapping("/email")
     public String email(Model model) {
-        return "email/wodaTemplate";
+        return "email/wodaSzablon";
     }
 }
