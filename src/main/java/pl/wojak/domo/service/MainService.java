@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class HomeService {
+public class MainService {
 
     @Autowired
     WspolnotaRepository wspolnotaRepository;

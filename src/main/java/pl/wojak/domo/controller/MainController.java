@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.wojak.domo.entity.WspolnotaEntity;
-import pl.wojak.domo.service.HomeService;
+import pl.wojak.domo.service.MainService;
 
 import java.util.List;
 
 @Controller
-public class HomeController {
+public class MainController {
 
     @Autowired
-    HomeService homeService;
+    MainService mainService;
 
     @GetMapping({"/"})
     public String mainPage(Model model) {
 
-        homeService.stronaGlowna(model);
+        mainService.stronaGlowna(model);
         return "index";
     }
 
