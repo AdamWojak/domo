@@ -17,16 +17,51 @@
         <br>
         <br>
 
-        <form th:action="@{/}" th:object="${wspolnoty}" method="post">
+        <form th:action="@{/}" th:object="${dane}" method="post">
+            <!--<h3>-->
+                <!--<label th:text="#{index.wybierzWspolnote}"></label>-->
+                <!--<select id="wspolnoty" name="wspolnoty">-->
+                    <!--<option-->
+                            <!--th:each="wspolnota: ${wspolnoty}"-->
+                            <!--th:value="${wspolnota.id}"-->
+                            <!--th:text="${wspolnota.id} + ' - ' + ${wspolnota.nazwa}"></option>-->
+                <!--</select>-->
+            <!--</h3>-->
+
             <h3>
                 <label th:text="#{index.wybierzWspolnote}"></label>
-                <select id="wspolnoty" name="wspolnoty">
+                <select th:field="*{wspolnoty}">
                     <option
                             th:each="wspolnota: ${wspolnoty}"
                             th:value="${wspolnota.id}"
                             th:text="${wspolnota.id} + ' - ' + ${wspolnota.nazwa}"></option>
                 </select>
             </h3>
+            <h3>
+                <label th:text="#{index.wybierzDzien}"></label>
+                <select th:field="*{dni}">
+                    <option
+                            th:each="dzien : ${dni}"
+                            th:value="${dzien}"
+                            th:text="${dzien}"></option>
+                </select>
+                <label th:text="#{index.wybierzMiesiąc}"></label>
+                <select th:field="*{miesiace}">
+                    <option
+                            th:each="miesiac : ${miesiace}"
+                            th:value="${miesiac}"
+                            th:text="${miesiac}">miesiac</option>
+                </select>
+                <label th:text="#{index.wybierzRok}"></label>
+                <select th:field="*{lata}">
+                    <option
+                            th:each="rok : ${lata}"
+                            th:value="${rok}"
+                            th:text="${rok}"></option>
+                </select>
+            </h3>
+
+
             <div>
                 <input type="submit" th:value="#{przycisk.wyslij}">
             </div>
@@ -48,3 +83,27 @@
 
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<h3>-->
+    <!--<label th:text="#{index.wybierzWspolnote}"></label>-->
+    <!--<select id="wspolnoty" name="wspolnoty">-->
+        <!--<option-->
+                <!--th:each="wspolnota: ${wspolnoty}"-->
+                <!--th:value="${wspolnota.id}"-->
+                <!--th:text="${wspolnota.id} + ' - ' + ${wspolnota.nazwa}"></option>-->
+    <!--</select>-->
+<!--</h3>-->

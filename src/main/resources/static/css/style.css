@@ -27,7 +27,7 @@ body {
     padding-bottom: 100px; /* Height of the footer element */
 }
 
-h1, h2, .options {
+h1, h2, h3 .options {
     display: flex;
     align-items: center;
     justify-content: center;

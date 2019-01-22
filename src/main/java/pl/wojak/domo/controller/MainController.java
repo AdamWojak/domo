@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.wojak.domo.dto.DaneDTO;
 import pl.wojak.domo.entity.WspolnotaEntity;
 import pl.wojak.domo.service.MainService;
 
@@ -26,9 +27,11 @@ public class MainController {
     }
 
     @PostMapping("/")
-    public String sendEmail(@ModelAttribute("wspolnoty")List<WspolnotaEntity> wspolnoty, Model model){
-
+    public String sendEmail(@ModelAttribute("dane") DaneDTO wybraneDane) {
+        WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
         System.out.println("test");
+
+        mainService.przygotujDaneDoWyslaniaWszystkichEmaili(wybranaWspolnota, wybraneDane);
 
         return "koniec";
     }
