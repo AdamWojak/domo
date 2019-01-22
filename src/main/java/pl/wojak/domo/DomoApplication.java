@@ -8,7 +8,7 @@ public class DomoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DomoApplication.class, args);
-        System.out.println("cześć tu DomoProject");
+        System.out.println("-------------------------CZEŚĆ TU DOMO - PROJECT -------------------------");
     }
 
 }

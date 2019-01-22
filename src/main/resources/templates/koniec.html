@@ -16,21 +16,7 @@
         <h2 th:text="#{index.opis}"></h2>
         <br>
         <br>
-
-        <form th:action="@{/}" th:object="${wspolnoty}" method="post">
-            <h3>
-                <label th:text="#{index.wybierzWspolnote}"></label>
-                <select id="wspolnoty" name="wspolnoty">
-                    <option
-                            th:each="wspolnota: ${wspolnoty}"
-                            th:value="${wspolnota.id}"
-                            th:text="${wspolnota.id} + ' - ' + ${wspolnota.nazwa}"></option>
-                </select>
-            </h3>
-            <div>
-                <input type="submit" th:value="#{przycisk.wyslij}">
-            </div>
-        </form>
+        <h2 th:text="#{index.koniec}"></h2>
         <br>
         <br>
         <a href="/email">EMAIL WZRÓR</a>

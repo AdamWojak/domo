@@ -26,7 +26,7 @@ public class WspolnotaEntity {
 
     private String ulica;
 
-    private String email;
+    private String nazwa;
 
     @Column(name = "kod_pocztowy")
     private String kodPocztowy;
