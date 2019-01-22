@@ -34,6 +34,9 @@ public class WlascicielEntity {
     @Column(name = "osoba_kontaktowa")
     private boolean osobaKontaktowa;
 
-    @ManyToMany(mappedBy = "wlasciciele")
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = {CascadeType.PERSIST,
+                            CascadeType.MERGE},
+                mappedBy = "wlasciciele")
     private List<LokalEntity> lokale = new ArrayList<>();
 }

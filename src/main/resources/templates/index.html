@@ -18,16 +18,6 @@
         <br>
 
         <form th:action="@{/}" th:object="${dane}" method="post">
-            <!--<h3>-->
-                <!--<label th:text="#{index.wybierzWspolnote}"></label>-->
-                <!--<select id="wspolnoty" name="wspolnoty">-->
-                    <!--<option-->
-                            <!--th:each="wspolnota: ${wspolnoty}"-->
-                            <!--th:value="${wspolnota.id}"-->
-                            <!--th:text="${wspolnota.id} + ' - ' + ${wspolnota.nazwa}"></option>-->
-                <!--</select>-->
-            <!--</h3>-->
-
             <h3>
                 <label th:text="#{index.wybierzWspolnote}"></label>
                 <select th:field="*{wspolnoty}">
@@ -50,7 +40,8 @@
                     <option
                             th:each="miesiac : ${miesiace}"
                             th:value="${miesiac}"
-                            th:text="${miesiac}">miesiac</option>
+                            th:text="${miesiac}">miesiac
+                    </option>
                 </select>
                 <label th:text="#{index.wybierzRok}"></label>
                 <select th:field="*{lata}">
@@ -85,25 +76,12 @@
 </html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!--<h3>-->
-    <!--<label th:text="#{index.wybierzWspolnote}"></label>-->
-    <!--<select id="wspolnoty" name="wspolnoty">-->
-        <!--<option-->
-                <!--th:each="wspolnota: ${wspolnoty}"-->
-                <!--th:value="${wspolnota.id}"-->
-                <!--th:text="${wspolnota.id} + ' - ' + ${wspolnota.nazwa}"></option>-->
-    <!--</select>-->
+<!--<label th:text="#{index.wybierzWspolnote}"></label>-->
+<!--<select id="wspolnoty" name="wspolnoty">-->
+<!--<option-->
+<!--th:each="wspolnota: ${wspolnoty}"-->
+<!--th:value="${wspolnota.id}"-->
+<!--th:text="${wspolnota.id} + ' - ' + ${wspolnota.nazwa}"></option>-->
+<!--</select>-->
 <!--</h3>-->

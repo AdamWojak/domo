@@ -38,6 +38,11 @@ public class LokalEntity {
     @Column(name = "nr_kontrolny")
     private Integer nrKontrolny;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = { CascadeType.PERSIST,
+                            CascadeType.MERGE})
+    @JoinTable(name = "lokal_wlasciciel",
+            joinColumns = { @JoinColumn(name = "lokal_id") },
+            inverseJoinColumns = { @JoinColumn(name = "wlasciciel_id") })
     private List<WlascicielEntity> wlasciciele = new ArrayList<>();
 }

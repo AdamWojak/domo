@@ -28,10 +28,10 @@ public class MainController {
 
     @PostMapping("/")
     public String sendEmail(@ModelAttribute("dane") DaneDTO wybraneDane) {
-        WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
+
         System.out.println("test");
 
-        mainService.przygotujDaneDoWyslaniaWszystkichEmaili(wybranaWspolnota, wybraneDane);
+        mainService.przygotujDaneDoWyslaniaWszystkichEmaili(wybraneDane);
 
         return "koniec";
     }

@@ -4,14 +4,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import pl.wojak.domo.dto.DaneDTO;
+import pl.wojak.domo.entity.LokalEntity;
 import pl.wojak.domo.entity.WspolnotaEntity;
+import pl.wojak.domo.repository.LokalRepository;
 import pl.wojak.domo.repository.WspolnotaRepository;
+
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.ResourceBundle;
 
 @Service
 public class MainService {
 
     @Autowired
     WspolnotaRepository wspolnotaRepository;
+
+    @Autowired
+    LokalRepository lokalRepository;
+
+    private final String SEPARATOR = "-";
 
     public void stronaGlowna(Model model) {
         DaneDTO dane = new DaneDTO();
@@ -24,8 +35,33 @@ public class MainService {
 
     }
 
-    public void przygotujDaneDoWyslaniaWszystkichEmaili(WspolnotaEntity wybranaWspolnota, DaneDTO wybranaData) {
+    public void przygotujDaneDoWyslaniaWszystkichEmaili(DaneDTO wybraneDane) {
 
+        WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
+        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
+
+        String data = ustawDate(wybraneDane);
+
+        String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), data);
+//
+//        String tresc = ResourceBundle.getBundle("messages").getString("mail.content");
+//        String adresat;
+        System.out.println("test");
+    }
+
+    private String ustawDate(DaneDTO wybraneDane) {
+        Integer dzien = wybraneDane.getDni().get(0);
+        Integer miesiac = wybraneDane.getMiesiace().get(0);
+        Integer rok = wybraneDane.getLata().get(0);
+
+        StringBuilder data = new StringBuilder()
+                .append(dzien)
+                .append(SEPARATOR)
+                .append(miesiac)
+                .append(SEPARATOR)
+                .append(rok);
+
+        return data.toString();
     }
 
     private void wyslijEmail() {
