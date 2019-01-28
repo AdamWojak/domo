@@ -51,6 +51,15 @@
                             th:text="${rok}"></option>
                 </select>
             </h3>
+            <br>
+            <h3>
+                <label th:text="#{index.okresOd}"> </label>
+                <input th:type="date" th:field="*{dataOd}"/>
+                <br>
+                <br>
+                <label th:text="#{index.okresDo}"> </label>
+                <input th:type="date" th:field="*{dataDo}"/>
+            </h3>
 
 
             <div>
