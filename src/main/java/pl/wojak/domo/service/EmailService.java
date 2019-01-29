@@ -14,9 +14,12 @@ import java.time.LocalDateTime;
 @Service
 public class EmailService {
 
+    @Value("${spring.mail.replyTo}")
+    public String odpowiedzDo;
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
     public String nadawca;
+
 
     public EmailService(JavaMailSender javaMailSender, TemplateEngine templateEngine, @Value("${spring.mail.from}") String nadawca) {
         this.javaMailSender = javaMailSender;
@@ -24,7 +27,7 @@ public class EmailService {
         this.nadawca = nadawca;
     }
 
-    public void wyslijEmail(String temat, String tresc, String adresat) {
+    public void wyslijEmail(String temat, String tresc, String adresat, String kodLokalu) {
 
         String content = przygotujMaila(tresc);
 
@@ -33,6 +36,7 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
             helper.setTo(adresat);
             helper.setFrom(nadawca);
+            helper.setReplyTo(odpowiedzDo);
             helper.setSubject(temat);
             helper.setText(content, true);
         } catch (MessagingException e) {
@@ -40,8 +44,8 @@ public class EmailService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(LocalDateTime.now()+ "Wysyła mail do: " + adresat);
-        javaMailSender.send(mail);
+        System.out.println(LocalDateTime.now() + "Wysyła mail do: " + kodLokalu + " email: " + adresat);
+//        javaMailSender.send(mail);
     }
 
 

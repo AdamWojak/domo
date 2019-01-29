@@ -45,24 +45,25 @@ public class MainService {
     public void przygotujDaneDoWyslaniaWszystkichEmaili(DaneDTO wybraneDane) {
 
         WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
-        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
+//        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
+        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzWybranyLokalDlaWspolnotyOId(wybranaWspolnota.getId(), 7L);
 
         String dataOdczytu = ustawDateOdczytu(wybraneDane);
         String dataOd = wybraneDane.getDataOd();
         String dataDo = wybraneDane.getDataDo();
 
-        System.out.println("POCZATEK WYSYŁKI MAILI" + LocalDateTime.now());
+        System.out.println("POCZATEK WYSYŁKI MAILI: " + LocalDateTime.now());
 
         for (LokalEntity lokal : lokaleWybranejWspolnoty) {
             String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), dataOdczytu, wybranaWspolnota.getNazwa(), lokal.getNrMieszkania());
             String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tresc"), dataOd, dataDo, wybranaWspolnota.getNazwa(), lokal.getNrMieszkania());
             List<String> adresaci = wlascicielRepository.pobierzEmaileOsobKontaktowychDlaKonkretnegoLokalu(lokal.getId());
             for (String adresat : adresaci) {
-                emailService.wyslijEmail(temat, tresc, adresat);
+                emailService.wyslijEmail(temat, tresc, adresat, lokal.getKodLokalu());
             }
         }
 
-        System.out.println("KONIEC WYSYŁKI MAILI" + LocalDateTime.now());
+        System.out.println("KONIEC WYSYŁKI MAILI: " + LocalDateTime.now());
     }
 
     private String ustawDateOdczytu(DaneDTO wybraneDane) {
