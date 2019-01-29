@@ -44,7 +44,7 @@ public class EmailService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(LocalDateTime.now() + "Wysyła mail do: " + kodLokalu + " email: " + adresat);
+        System.out.println(LocalDateTime.now() + " Wysyła mail do: " + kodLokalu + " email: " + adresat);
         javaMailSender.send(mail);
     }
 

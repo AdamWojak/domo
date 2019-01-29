@@ -45,8 +45,9 @@ public class MainService {
     public void przygotujDaneDoWyslaniaWszystkichEmaili(DaneDTO wybraneDane) {
 
         WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
-//        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
-        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzWybranyLokalDlaWspolnotyOId(wybranaWspolnota.getId(), 7L);
+//        todo podpytać Maćka o wydajność (jedno zapytanie i wyciągam * czy tak jak poniżej, że później dla każdego lokalu strzelam zapytaniem o email)
+        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
+//        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzWybranyLokalDlaWspolnotyOId(wybranaWspolnota.getId(), 7L);
 
         String dataOdczytu = ustawDateOdczytu(wybraneDane);
         String dataOd = wybraneDane.getDataOd();

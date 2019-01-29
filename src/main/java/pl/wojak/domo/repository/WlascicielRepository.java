@@ -11,6 +11,7 @@ import java.util.List;
 public interface WlascicielRepository extends CrudRepository<WlascicielEntity, Long> {
 
 
-    @Query(value = "select os.email from domo_schema.wlasciciel os left join domo_schema.lokal_wlasciciel los on os.id = los.wlasciciel_id where los.lokal_id = 7 and os.osoba_kontaktowa = true", nativeQuery = true)
+    @Query(value = "select os.email from domo_schema.wlasciciel os left join domo_schema.lokal_wlasciciel los on os.id = los.wlasciciel_id " +
+            "where los.lokal_id = ?1 and os.osoba_kontaktowa = true", nativeQuery = true)
     List<String> pobierzEmaileOsobKontaktowychDlaKonkretnegoLokalu(Long idLokalu);
 }
