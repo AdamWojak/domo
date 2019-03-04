@@ -6,25 +6,39 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "wlasciciel", schema = "domo_schema")
+@Table(name = "lokalwlascicielview", schema = "domo_schema")
 @Data
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class WlascicielEntity {
+public class LokalWlascicielView {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JoinColumn(name = "wspolnota_id")
+    private Integer wspolnotaId;
+
+    @Column(name = "lokal_id")
+    private Long lokalId;
+
+    @Column(name = "kod_lokalu")
+    private String kodLokalu;
+
+    @Column(name = "nr_mieszkania")
+    private Integer nrMieszkania;
+
+    @Column(name = "wlasciciel_id")
+    private Long wlascicielId;
+
     private String nazwisko;
 
     private String imie;
 
+    @Column(name = "osoba_nazwa")
     private String nazwa;
 
     private String email;
@@ -36,9 +50,4 @@ public class WlascicielEntity {
     @Column(name = "osoba_kontaktowa")
     private boolean osobaKontaktowa;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-                cascade = {CascadeType.PERSIST,
-                            CascadeType.MERGE},
-                mappedBy = "wlasciciele")
-    private List<LokalEntity> lokale = new ArrayList<>();
 }

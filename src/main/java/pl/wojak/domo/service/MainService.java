@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import pl.wojak.domo.dto.DaneDTO;
 import pl.wojak.domo.entity.LokalEntity;
+import pl.wojak.domo.entity.LokalWlascicielView;
 import pl.wojak.domo.entity.WspolnotaEntity;
 import pl.wojak.domo.repository.LokalRepository;
 import pl.wojak.domo.repository.WlascicielRepository;
+import pl.wojak.domo.repository.LokalWlascicielViewRepository;
 import pl.wojak.domo.repository.WspolnotaRepository;
 
 import java.text.MessageFormat;
@@ -30,6 +32,10 @@ public class MainService {
     @Autowired
     EmailService emailService;
 
+
+    @Autowired
+    LokalWlascicielViewRepository lokalWlascicielViewRepository;
+
     private final String SEPARATOR = "-";
 
     public void stronaGlowna(Model model) {
@@ -45,9 +51,8 @@ public class MainService {
     public void przygotujDaneDoWyslaniaWszystkichEmaili(DaneDTO wybraneDane) {
 
         WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
-//        todo podpytać Maćka o wydajność (jedno zapytanie i wyciągam * czy tak jak poniżej, że później dla każdego lokalu strzelam zapytaniem o email)
-        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
-//        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzWybranyLokalDlaWspolnotyOId(wybranaWspolnota.getId(), 7L);
+        List<LokalWlascicielView> lokaleIWlascicieleWspolnoty =
+                lokalWlascicielViewRepository.wybierzLokaleIOsobyKontaktoweDlaWybranejWspolnoty(wybranaWspolnota.getId());
 
         String dataOdczytu = ustawDateOdczytu(wybraneDane);
         String dataOd = wybraneDane.getDataOd();
@@ -80,5 +85,20 @@ public class MainService {
                 .append(rok);
 
         return data.toString();
+    }
+
+    private void wyslijEmail() {
+
+//        String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), user.getUserName());
+//
+//        String tresc = ResourceBundle.getBundle("messages").getString("mail.content");
+//        String adresat;
+//        if (user.getUserName().equals(ANONYMOUS_NAME)) {
+//            adresat = ResourceBundle.getBundle("messages").getString("mail.addressee");
+//            emailService.sendSimpleEmail(temat, tresc, adresat);
+//        } else {
+//            adresat = user.getEmail();
+//            emailService.sendExpandedEmail(temat, tresc, adresat);
+//        }
     }
 }
