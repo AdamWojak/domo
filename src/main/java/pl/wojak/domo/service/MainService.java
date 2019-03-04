@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import pl.wojak.domo.dto.DaneDTO;
 import pl.wojak.domo.entity.LokalEntity;
+import pl.wojak.domo.entity.LokalWlascicielView;
 import pl.wojak.domo.entity.WspolnotaEntity;
 import pl.wojak.domo.repository.LokalRepository;
+import pl.wojak.domo.repository.LokalWlascicielViewRepository;
 import pl.wojak.domo.repository.WspolnotaRepository;
 
 import java.text.MessageFormat;
@@ -21,6 +23,10 @@ public class MainService {
 
     @Autowired
     LokalRepository lokalRepository;
+
+
+    @Autowired
+    LokalWlascicielViewRepository lokalWlascicielViewRepository;
 
     private final String SEPARATOR = "-";
 
@@ -38,7 +44,8 @@ public class MainService {
     public void przygotujDaneDoWyslaniaWszystkichEmaili(DaneDTO wybraneDane) {
 
         WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
-        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
+        List<LokalWlascicielView> lokaleIWlascicieleWspolnoty =
+                lokalWlascicielViewRepository.wybierzLokaleIOsobyKontaktoweDlaWybranejWspolnoty(wybranaWspolnota.getId());
 
         String data = ustawDate(wybraneDane);
 
@@ -46,6 +53,9 @@ public class MainService {
 //
 //        String tresc = ResourceBundle.getBundle("messages").getString("mail.content");
 //        String adresat;
+
+
+
         System.out.println("test");
     }
 
