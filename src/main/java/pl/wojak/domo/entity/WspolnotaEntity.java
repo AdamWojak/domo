@@ -33,5 +33,7 @@ public class WspolnotaEntity {
 
     private boolean obslogiwana;
 
+    private String gdzie;
+
 
 }

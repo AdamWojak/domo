@@ -17,10 +17,11 @@ public class LokalWlascicielView {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "row_number")
     private Long id;
 
     @JoinColumn(name = "wspolnota_id")
-    private Integer wspolnotaId;
+    private Long wspolnotaId;
 
     @Column(name = "lokal_id")
     private Long lokalId;
@@ -43,11 +44,11 @@ public class LokalWlascicielView {
 
     private String email;
 
-    private boolean aktualny;
+    private Boolean aktualny;
 
-    private boolean wspolwlasciciel;
+    private Boolean wspolwlasciciel;
 
     @Column(name = "osoba_kontaktowa")
-    private boolean osobaKontaktowa;
+    private Boolean osobaKontaktowa;
 
 }

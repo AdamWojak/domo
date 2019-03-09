@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import pl.wojak.domo.dto.DaneDTO;
-import pl.wojak.domo.entity.LokalEntity;
 import pl.wojak.domo.entity.LokalWlascicielView;
 import pl.wojak.domo.entity.WspolnotaEntity;
 import pl.wojak.domo.repository.LokalRepository;
-import pl.wojak.domo.repository.WlascicielRepository;
 import pl.wojak.domo.repository.LokalWlascicielViewRepository;
+import pl.wojak.domo.repository.WlascicielRepository;
 import pl.wojak.domo.repository.WspolnotaRepository;
 
 import java.text.MessageFormat;
@@ -51,8 +50,7 @@ public class MainService {
     public void przygotujDaneDoWyslaniaWszystkichEmaili(DaneDTO wybraneDane) {
 
         WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
-        List<LokalWlascicielView> lokaleIWlascicieleWspolnoty =
-                lokalWlascicielViewRepository.wybierzLokaleIOsobyKontaktoweDlaWybranejWspolnoty(wybranaWspolnota.getId());
+        List<LokalWlascicielView> lokaleIWlascicieleWspolnoty = lokalWlascicielViewRepository.wybierzLokaleIOsobyKontaktoweDlaWybranejWspolnoty(wybranaWspolnota.getId());
 
         String dataOdczytu = ustawDateOdczytu(wybraneDane);
         String dataOd = wybraneDane.getDataOd();
@@ -60,13 +58,11 @@ public class MainService {
 
         System.out.println("POCZATEK WYSYŁKI MAILI: " + LocalDateTime.now());
 
-        for (LokalEntity lokal : lokaleWybranejWspolnoty) {
-            String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), dataOdczytu, wybranaWspolnota.getNazwa(), lokal.getNrMieszkania());
-            String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tresc"), dataOd, dataDo, wybranaWspolnota.getNazwa(), lokal.getNrMieszkania());
-            List<String> adresaci = wlascicielRepository.pobierzEmaileOsobKontaktowychDlaKonkretnegoLokalu(lokal.getId());
-            for (String adresat : adresaci) {
-                emailService.wyslijEmail(temat, tresc, adresat, lokal.getKodLokalu());
-            }
+        for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
+            String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
+            String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tresc"), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
+
+            emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
         }
 
         System.out.println("KONIEC WYSYŁKI MAILI: " + LocalDateTime.now());
