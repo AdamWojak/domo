@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MainService {
@@ -57,12 +58,18 @@ public class MainService {
         String dataDo = wybraneDane.getDataDo();
 
         System.out.println("POCZATEK WYSYŁKI MAILI: " + LocalDateTime.now());
+        try {
+            for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
+                String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
+                String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tresc"), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
 
-        for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
-            String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
-            String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tresc"), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
-
-            emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
+                emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
+                System.out.println("TIMER POCZĄTEK: " + LocalDateTime.now());
+                TimeUnit.SECONDS.sleep(30L);
+                System.out.println("TIMER KONIEC: " + LocalDateTime.now());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         System.out.println("KONIEC WYSYŁKI MAILI: " + LocalDateTime.now());
