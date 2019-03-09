@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import pl.wojak.domo.dto.DaneDTO;
-import pl.wojak.domo.entity.LokalEntity;
+import pl.wojak.domo.entity.LokalWlascicielView;
 import pl.wojak.domo.entity.WspolnotaEntity;
 import pl.wojak.domo.repository.LokalRepository;
+import pl.wojak.domo.repository.LokalWlascicielViewRepository;
+import pl.wojak.domo.repository.WlascicielRepository;
 import pl.wojak.domo.repository.WspolnotaRepository;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,6 +25,16 @@ public class MainService {
     @Autowired
     LokalRepository lokalRepository;
 
+    @Autowired
+    WlascicielRepository wlascicielRepository;
+
+    @Autowired
+    EmailService emailService;
+
+
+    @Autowired
+    LokalWlascicielViewRepository lokalWlascicielViewRepository;
+
     private final String SEPARATOR = "-";
 
     public void stronaGlowna(Model model) {
@@ -32,24 +45,30 @@ public class MainService {
         model.addAttribute("dni", dane.getDni());
         model.addAttribute("miesiace", dane.getMiesiace());
         model.addAttribute("lata", dane.getLata());
-
     }
 
     public void przygotujDaneDoWyslaniaWszystkichEmaili(DaneDTO wybraneDane) {
 
         WspolnotaEntity wybranaWspolnota = wybraneDane.getWspolnoty().get(0);
-        List<LokalEntity> lokaleWybranejWspolnoty = lokalRepository.pobierzListeLokaliDlaWspolnotyOId(wybranaWspolnota.getId());
+        List<LokalWlascicielView> lokaleIWlascicieleWspolnoty = lokalWlascicielViewRepository.wybierzLokaleIOsobyKontaktoweDlaWybranejWspolnoty(wybranaWspolnota.getId());
 
-        String data = ustawDate(wybraneDane);
+        String dataOdczytu = ustawDateOdczytu(wybraneDane);
+        String dataOd = wybraneDane.getDataOd();
+        String dataDo = wybraneDane.getDataDo();
 
-        String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), data);
-//
-//        String tresc = ResourceBundle.getBundle("messages").getString("mail.content");
-//        String adresat;
-        System.out.println("test");
+        System.out.println("POCZATEK WYSYŁKI MAILI: " + LocalDateTime.now());
+
+        for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
+            String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
+            String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tresc"), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
+
+            emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
+        }
+
+        System.out.println("KONIEC WYSYŁKI MAILI: " + LocalDateTime.now());
     }
 
-    private String ustawDate(DaneDTO wybraneDane) {
+    private String ustawDateOdczytu(DaneDTO wybraneDane) {
         Integer dzien = wybraneDane.getDni().get(0);
         Integer miesiac = wybraneDane.getMiesiace().get(0);
         Integer rok = wybraneDane.getLata().get(0);

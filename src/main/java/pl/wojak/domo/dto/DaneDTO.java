@@ -18,6 +18,8 @@ public class DaneDTO {
     List<Integer> dni;
     List<Integer> miesiace;
     List<Integer> lata;
+    String dataOd;
+    String dataDo;
 
     public DaneDTO() {
         this.wspolnoty = new LinkedList<>();

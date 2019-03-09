@@ -21,9 +21,11 @@ public class WlascicielEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nazwisko;
+
     private String imie;
 
-    private String nazwisko;
+    private String nazwa;
 
     private String email;
 

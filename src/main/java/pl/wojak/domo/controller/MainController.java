@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.wojak.domo.dto.DaneDTO;
-import pl.wojak.domo.entity.WspolnotaEntity;
 import pl.wojak.domo.service.MainService;
-
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -29,10 +26,7 @@ public class MainController {
     @PostMapping("/")
     public String sendEmail(@ModelAttribute("dane") DaneDTO wybraneDane) {
 
-        System.out.println("test");
-
         mainService.przygotujDaneDoWyslaniaWszystkichEmaili(wybraneDane);
-
         return "koniec";
     }
 
