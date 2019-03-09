@@ -91,7 +91,6 @@ public class MainService {
     }
 
     private void wyslijEmail() {
-
 //        String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), user.getUserName());
 //
 //        String tresc = ResourceBundle.getBundle("messages").getString("mail.content");
