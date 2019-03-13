@@ -23,9 +23,6 @@ public class EmailEntity {
     @JoinColumn(name = "wlasciciel_id")
     private WlascicielEntity wlasciciel;
 
-    @Column(name = "email_wlasciciel")
-    private String emailWlasciciel;
-
     private String temat;
 
     private String tresc;
@@ -35,7 +32,6 @@ public class EmailEntity {
 
     public EmailEntity(WlascicielEntity wlasciciel, String temat, String tresc, String sciezkaPliku) {
         this.wlasciciel = wlasciciel;
-        this.emailWlasciciel = wlasciciel.getEmail();
         this.temat = temat;
         this.tresc = tresc;
         this.sciezkaPliku = sciezkaPliku;
