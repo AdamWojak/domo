@@ -75,6 +75,20 @@ public class MainService {
         }
     }
 
+    private String ustawDateOdczytu(DaneDTO wybraneDane) {
+        Integer dzien = wybraneDane.getDni().get(0);
+        Integer miesiac = wybraneDane.getMiesiace().get(0);
+        Integer rok = wybraneDane.getLata().get(0);
+
+        StringBuilder data = new StringBuilder()
+                .append(dzien)
+                .append(SEPARATOR)
+                .append(miesiac)
+                .append(SEPARATOR)
+                .append(rok);
+
+        return data.toString();
+    }
 
 
     private void wyslijDzialajacegoMaila(WspolnotaEntity wybranaWspolnota, List<LokalWlascicielView> lokaleIWlascicieleWspolnoty, String dataOdczytu, String dataOd, String dataDo) {
@@ -96,20 +110,7 @@ public class MainService {
         System.out.println("KONIEC WYSYŁKI MAILI: " + LocalDateTime.now());
     }
 
-    private String ustawDateOdczytu(DaneDTO wybraneDane) {
-        Integer dzien = wybraneDane.getDni().get(0);
-        Integer miesiac = wybraneDane.getMiesiace().get(0);
-        Integer rok = wybraneDane.getLata().get(0);
 
-        StringBuilder data = new StringBuilder()
-                .append(dzien)
-                .append(SEPARATOR)
-                .append(miesiac)
-                .append(SEPARATOR)
-                .append(rok);
-
-        return data.toString();
-    }
 
     private void wyslijEmail() {
 //        String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.temat"), user.getUserName());
