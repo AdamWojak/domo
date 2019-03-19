@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "email", schema = "domo_schema")
@@ -23,6 +24,12 @@ public class EmailEntity {
     @JoinColumn(name = "wlasciciel_id")
     private WlascicielEntity wlasciciel;
 
+    @Column(name = "data_utworzenia")
+    private LocalDateTime dataUtworzenia;
+
+    @Column(name = "data_wyslania")
+    private LocalDateTime dataWyslania;
+
     private String temat;
 
     private String tresc;
@@ -32,6 +39,7 @@ public class EmailEntity {
 
     public EmailEntity(WlascicielEntity wlasciciel, String temat, String tresc, String sciezkaPliku) {
         this.wlasciciel = wlasciciel;
+        this.dataUtworzenia = LocalDateTime.now();
         this.temat = temat;
         this.tresc = tresc;
         this.sciezkaPliku = sciezkaPliku;
