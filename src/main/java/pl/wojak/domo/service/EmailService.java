@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
 @Service
 public class EmailService {
 
-    @Value("${spring.mail.replyTo}")
+    @Value("${spring.mail.properties.mail.smtp.replyTo}")
     public String odpowiedzDo;
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
     public String nadawca;
 
 
-    public EmailService(JavaMailSender javaMailSender, TemplateEngine templateEngine, @Value("${spring.mail.from}") String nadawca) {
+    public EmailService(JavaMailSender javaMailSender, TemplateEngine templateEngine, @Value("${spring.mail.properties.mail.smtp.from}") String nadawca) {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
         this.nadawca = nadawca;
@@ -45,7 +45,7 @@ public class EmailService {
             e.printStackTrace();
         }
         System.out.println(LocalDateTime.now() + " Wysyła mail do: " + kodLokalu + " email: " + adresat);
-//        javaMailSender.send(mail);
+        javaMailSender.send(mail);
     }
 
 

@@ -1,0 +1,38 @@
+spring:
+
+  profiles:
+    active: local
+
+  application:
+    resource: C:/Users/WAC/Dysk Google
+#    "C:\\Users\\WAC\\Dysk Google"
+
+  datasource:
+    url: jdbc:postgresql://localhost/domo_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: adamwojak88@gmail.com
+    password: xxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          from: adamwojak88@gmail.com
+          replyTo: adam.wojak@wp.eu
+
+# gmail działa do podpięcia WP.pl
+

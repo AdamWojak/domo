@@ -1,5 +1,6 @@
 package pl.wojak.domo.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.wojak.domo.dto.DaneDTO;
 import pl.wojak.domo.entity.LokalWlascicielView;
@@ -14,9 +15,10 @@ public class SciezkaPlikuService {
     private static final String K_R_DOM = "K.R.DOM";
     private static final String ROZLICZENIE_WODY = "rozliczenie_wody";
 
-    //    todo przenieść do properties:     @Value("${app.lokalizacja_plikow}")
-    private String zasob = "C:\\Users\\WAC\\Dysk Google";
+    @Value("${spring.application.resource}")
+    private String zasob;
 
+//    private String zasob = "C:\\Users\\WAC\\Dysk Google";
 //     private String przykladowa_sciezka = "C:\\Users\\WAC\\Dysk Google\\K.R.DOM\\rozliczenie_wody\\2019\\03\\W01";
 //     private String przykladowa_nazwa = "W01_01";
 
