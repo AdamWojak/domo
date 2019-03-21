@@ -1,6 +1,9 @@
 package pl.wojak.domo.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -40,12 +43,21 @@ public class EmailService {
             helper.setSubject(temat);
             helper.setText(content, true);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            System.out.println("To jest mój błąd wiadomości: " + e);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("To jest ogólny błąd przy tworzeniu wiadomości: " + e);
         }
         System.out.println(LocalDateTime.now() + " Wysyła mail do: " + kodLokalu + " email: " + adresat);
-        javaMailSender.send(mail);
+        try {
+//            javaMailSender.send(mail);
+        } catch (MailAuthenticationException e) {
+            System.out.println("To jest błąd MailAuthenticationException: " + e);
+//            javax.mail.AuthenticationFailedException: 535 blad autoryzacji, niepoprawny login lub haslo / auth failure
+        } catch (MailSendException e) {
+            System.out.println("To jest błąd MailSendException: " + e);
+        } catch (MailException e) {
+            System.out.println("To jest błąd MailException: " + e);
+        }
     }
 
 

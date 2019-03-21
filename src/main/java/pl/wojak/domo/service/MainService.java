@@ -102,7 +102,7 @@ public class MainService {
 
                 emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
                 System.out.println("TIMER POCZĄTEK: " + LocalDateTime.now());
-                TimeUnit.SECONDS.sleep(30L);
+                TimeUnit.SECONDS.sleep(10L);
                 System.out.println("TIMER KONIEC: " + LocalDateTime.now());
             }
         } catch (InterruptedException e) {

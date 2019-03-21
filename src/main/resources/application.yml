@@ -1,7 +1,7 @@
 spring:
 
   profiles:
-    active: local
+    active: dev
 
   application:
     resource: C:/Users/WAC/Dysk Google
@@ -19,6 +19,11 @@ spring:
           lob:
             non_contextual_creation: true
 
+---
+
+spring:
+  profiles: local
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -34,5 +39,24 @@ spring:
           from: adamwojak88@gmail.com
           replyTo: adam.wojak@wp.eu
 
-# gmail działa do podpięcia WP.pl
+---
 
+spring:
+  profiles: dev
+
+  mail:
+    host: smtp.wp.pl
+#    zalecany port przez wp.pl to: 465, działa natomiast: 587
+    port: 587
+    username: adamwoj10@wp.pl
+    password: xxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl: true
+          starttls:
+            enable: true
+            required: true
+          from: adamwoj10@wp.pl
+          replyTo: adamwoj10@wp.pl
