@@ -64,15 +64,17 @@ public class MainService {
         String dataOd = wybraneDane.getDataOd();
         String dataDo = wybraneDane.getDataDo();
 
-        for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
-            WlascicielEntity wlasciciel = wlascicielRepository.findById(osoba.getWlascicielId()).orElseThrow(NullPointerException::new);
-            String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TEMAT), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
-            String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TRESC), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
-            String sciezka = sciezkaPlikuService.utworzSciezkeDoRozliczeniaWodyPdf(wybraneDane, wybranaWspolnota, osoba);
+        wyslijDzialajacegoMaila(wybranaWspolnota, lokaleIWlascicieleWspolnoty, dataOdczytu, dataOd, dataDo);
 
-            EmailEntity email = new EmailEntity(wlasciciel, temat, tresc, sciezka);
-            emailRepository.save(email);
-        }
+//        for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
+//            WlascicielEntity wlasciciel = wlascicielRepository.findById(osoba.getWlascicielId()).orElseThrow(NullPointerException::new);
+//            String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TEMAT), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
+//            String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TRESC), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
+//            String sciezka = sciezkaPlikuService.utworzSciezkeDoRozliczeniaWodyPdf(wybraneDane, wybranaWspolnota, osoba);
+//
+//            EmailEntity email = new EmailEntity(wlasciciel, temat, tresc, sciezka);
+//            emailRepository.save(email);
+//        }
     }
 
     private String ustawDateOdczytu(DaneDTO wybraneDane) {
@@ -100,7 +102,7 @@ public class MainService {
 
                 emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
                 System.out.println("TIMER POCZĄTEK: " + LocalDateTime.now());
-                TimeUnit.SECONDS.sleep(30L);
+                TimeUnit.SECONDS.sleep(10L);
                 System.out.println("TIMER KONIEC: " + LocalDateTime.now());
             }
         } catch (InterruptedException e) {
