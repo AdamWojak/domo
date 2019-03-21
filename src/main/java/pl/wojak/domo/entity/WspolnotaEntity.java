@@ -1,5 +1,6 @@
 package pl.wojak.domo.entity;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ public class WspolnotaEntity {
 
     @Column(name = "nr_wspolnoty")
     private Integer nrWspolnoty;
+
+    private String symbol;
 
     private String miasto;
 

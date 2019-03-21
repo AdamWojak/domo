@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "wlasciciel", schema = "domo_schema")
 @Data
-@ToString
+@ToString(exclude = "lokale")
 @NoArgsConstructor
 @AllArgsConstructor
 public class WlascicielEntity {

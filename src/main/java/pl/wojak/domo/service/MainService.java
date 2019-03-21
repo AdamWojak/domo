@@ -1,15 +1,13 @@
 package pl.wojak.domo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import pl.wojak.domo.dto.DaneDTO;
+import pl.wojak.domo.entity.EmailEntity;
 import pl.wojak.domo.entity.LokalWlascicielView;
+import pl.wojak.domo.entity.WlascicielEntity;
 import pl.wojak.domo.entity.WspolnotaEntity;
-import pl.wojak.domo.repository.LokalRepository;
-import pl.wojak.domo.repository.LokalWlascicielViewRepository;
-import pl.wojak.domo.repository.WlascicielRepository;
-import pl.wojak.domo.repository.WspolnotaRepository;
+import pl.wojak.domo.repository.*;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -20,23 +18,32 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class MainService {
 
-    @Autowired
-    WspolnotaRepository wspolnotaRepository;
-
-    @Autowired
-    LokalRepository lokalRepository;
-
-    @Autowired
-    WlascicielRepository wlascicielRepository;
-
-    @Autowired
-    EmailService emailService;
-
-
-    @Autowired
-    LokalWlascicielViewRepository lokalWlascicielViewRepository;
+    private static final String EMAIL_TEMAT = "email.temat";
+    private static final String EMAIL_TRESC = "email.tresc";
 
     private final String SEPARATOR = "-";
+
+
+
+    private final WspolnotaRepository wspolnotaRepository;
+    private final WlascicielRepository wlascicielRepository;
+    private final EmailRepository emailRepository;
+    private final LokalWlascicielViewRepository lokalWlascicielViewRepository;
+    private final EmailService emailService;
+    private final SciezkaPlikuService sciezkaPlikuService;
+
+
+    public MainService(WspolnotaRepository wspolnotaRepository,
+                       WlascicielRepository wlascicielRepository, EmailRepository emailRepository,
+                       LokalWlascicielViewRepository lokalWlascicielViewRepository,
+                       EmailService emailService, SciezkaPlikuService sciezkaPlikuService) {
+        this.wspolnotaRepository = wspolnotaRepository;
+        this.wlascicielRepository = wlascicielRepository;
+        this.emailRepository = emailRepository;
+        this.lokalWlascicielViewRepository = lokalWlascicielViewRepository;
+        this.emailService = emailService;
+        this.sciezkaPlikuService = sciezkaPlikuService;
+    }
 
     public void stronaGlowna(Model model) {
         DaneDTO dane = new DaneDTO();
@@ -57,22 +64,15 @@ public class MainService {
         String dataOd = wybraneDane.getDataOd();
         String dataDo = wybraneDane.getDataDo();
 
-        System.out.println("POCZATEK WYSYŁKI MAILI: " + LocalDateTime.now());
-        try {
-            for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
-                String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
-                String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tresc"), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
+        for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
+            WlascicielEntity wlasciciel = wlascicielRepository.findById(osoba.getWlascicielId()).orElseThrow(NullPointerException::new);
+            String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TEMAT), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
+            String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TRESC), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
+            String sciezka = sciezkaPlikuService.utworzSciezkeDoRozliczeniaWodyPdf(wybraneDane, wybranaWspolnota, osoba);
 
-                emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
-                System.out.println("TIMER POCZĄTEK: " + LocalDateTime.now());
-                TimeUnit.SECONDS.sleep(30L);
-                System.out.println("TIMER KONIEC: " + LocalDateTime.now());
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            EmailEntity email = new EmailEntity(wlasciciel, temat, tresc, sciezka);
+            emailRepository.save(email);
         }
-
-        System.out.println("KONIEC WYSYŁKI MAILI: " + LocalDateTime.now());
     }
 
     private String ustawDateOdczytu(DaneDTO wybraneDane) {
@@ -90,8 +90,30 @@ public class MainService {
         return data.toString();
     }
 
+
+    private void wyslijDzialajacegoMaila(WspolnotaEntity wybranaWspolnota, List<LokalWlascicielView> lokaleIWlascicieleWspolnoty, String dataOdczytu, String dataOd, String dataDo) {
+        System.out.println("POCZATEK WYSYŁKI MAILI: " + LocalDateTime.now());
+        try {
+            for (LokalWlascicielView osoba : lokaleIWlascicieleWspolnoty) {
+                String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TEMAT), dataOdczytu, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania());
+                String tresc = MessageFormat.format(ResourceBundle.getBundle("messages").getString(EMAIL_TRESC), dataOd, dataDo, wybranaWspolnota.getNazwa(), osoba.getNrMieszkania(), wybranaWspolnota.getGdzie());
+
+                emailService.wyslijEmail(temat, tresc, osoba.getEmail(), osoba.getKodLokalu());
+                System.out.println("TIMER POCZĄTEK: " + LocalDateTime.now());
+                TimeUnit.SECONDS.sleep(30L);
+                System.out.println("TIMER KONIEC: " + LocalDateTime.now());
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("KONIEC WYSYŁKI MAILI: " + LocalDateTime.now());
+    }
+
+
+
     private void wyslijEmail() {
-//        String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.tytul"), user.getUserName());
+//        String temat = MessageFormat.format(ResourceBundle.getBundle("messages").getString("email.temat"), user.getUserName());
 //
 //        String tresc = ResourceBundle.getBundle("messages").getString("mail.content");
 //        String adresat;

@@ -29,7 +29,7 @@ public class EmailService {
 
     public void wyslijEmail(String temat, String tresc, String adresat, String kodLokalu) {
 
-        String content = przygotujMaila(tresc);
+        String content = przygotujContentMaila(tresc);
 
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
@@ -49,7 +49,7 @@ public class EmailService {
     }
 
 
-    public String przygotujMaila(String tresc) {
+    public String przygotujContentMaila(String tresc) {
         Context context = new Context();
         context.setVariable("tresc", tresc);
         String content = templateEngine.process("template", context);
